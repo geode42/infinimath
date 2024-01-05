@@ -1,38 +1,44 @@
-# create-svelte
+# infinimath
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+You can select a questioner to generate infinite math questions for you, and if you know JS they're pretty easy to make yourself!
 
-## Creating a project
+Here's a template questioner:
+```ts
+type Options = { /* type definitions for key-value pairs */ }
 
-If you're seeing this, you've probably already done this step. Congrats!
+const questioner: Questioner<Options> = {
+	name: '<name>',
+	slug: '<internal-name>',
+	presets: [
+		{  // default preset is required
+			slug: 'default',
+			name: 'Default',
+			options: {
+				// key-value-pairs as defined above
+			}
+		},
+		// you can add more presets here
+	],
+	questionGenerator: options => {
+		const question = 'your $\\LaTeX$ here'
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+		// All answers in these arrays are valid (for their respective input)
+		const answers: { text: string[], latex: string[] } = {
+			text: [],
+			latex: [],
+		}
 
-# create a new project in my-app
-npm create svelte@latest my-app
+		answers.text.push('2/5')
+		answers.latex.push('\\frac{2}{5}')
+
+		return { question, answers }
+	}
+}
+
+export default questioner
 ```
+for now all the questioners are in `src/questioner/built-in-questioners/`
 
-## Developing
+This website uses SvelteKit+TS for um, idk websiting, KaTeX for question rendering, and MathQuill for the WYSIWYG math input
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+infinimath is very WIP right now, but thanks for stopping by!
