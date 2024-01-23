@@ -3,8 +3,8 @@ import { randomItem } from '../questionerUtils'
 type Options = { includeNegativeExponents: boolean, baseOptions: { base: number, powers: number[]}[] }
 
 const questioner: Questioner<Options> = {
-	name: 'Logarithms',
-	slug: 'log',
+	name: 'Exponents',
+	slug: 'exponent',
 	presets: [
 		{
 			slug: 'default',

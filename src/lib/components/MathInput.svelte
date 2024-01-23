@@ -28,26 +28,28 @@
 	let container: HTMLDivElement
 	const dispatch = createEventDispatcher()
 
-	$: mathField?.config(config)
+	$: mathField?.config(getConfig(config))
 	$: if (mathField && latex != mathField.latex()) mathField?.latex(latex)
 
-	onMount(() => {
-		const MQ = MathQuill.getInterface(2)
-		mathField = MQ.MathField(container, {...config, handlers: {
+	function getConfig(config: MathQuillConfig) {
+		return {...config, handlers: {
 			edit: (mathField) => {
-				console.log(mathField)
 				latex = mathField?.latex() || ''
-				dispatch('input')
 				if (config.handlers?.edit) config.handlers.edit(mathField)
+				dispatch('input')
 			},
 			upOutOf: (mathField) => {
 				if (config.handlers?.upOutOf) config.handlers.upOutOf(mathField)
 			},
 			moveOutOf: (dir, mathField) => {
-				console.log(dir)
 				if (config.handlers?.moveOutOf) config.handlers.moveOutOf(dir, mathField)
 			},
-		}})
+		}} satisfies MathQuillConfig
+	}
+
+	onMount(() => {
+		const MQ = MathQuill.getInterface(2)
+		mathField = MQ.MathField(container, getConfig(config))
 
 		focus = () => mathField?.focus()
 		blur = () => mathField?.blur()
